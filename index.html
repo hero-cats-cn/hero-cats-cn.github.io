@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>中国猫咪血库</title>
+  <style type="text/css">
+    
+  </style>
+
+
+<script type="text/javascript">  
+function initialize() {  
+  var map = new BMap.Map('map');
+  var point = new BMap.Point(116.404, 39.915);
+  map.centerAndZoom(point, 15); 
+}  
+   
+function loadScript() {  
+  var script = document.createElement("script");  
+  script.src = "https://api.map.baidu.com/api?v=3.0&ak=VAYAkAg1iSfXrFI1altZEfUBNToUAUHk&callback=initialize";
+  document.body.appendChild(script);  
+}  
+
+
+window.onload = loadScript;  
+</script>
+</head>
+<body>
+  <div id="label">我要</div>
+  <div id="donate">捐血</div>
+  <div id="receive">输血</div>
+
+  <div id="location">所在地</div>
+  <div id="beijing">北京</div>
+  <div id="nolocation">不在列表中</div>
+  <div id="qrcode"><img src=""></div>
+  <div>可能还没有群。你可以建群，然后把群二维码发至 maomixueku@outlook.com 我们会添加到列表</div>
+
+  <div id="map"></div>
+
+
+
+</body>
+</html>
