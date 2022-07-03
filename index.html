@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="Keywords" content="英雄猫, 全国各地, 抵制血猫, 猫血库, 志愿者, 微信群, 猫, 献血, China, Cat blood Donation, Volunteer, How to, Tips, Website">
+  <meta name="Description" content="组织全国猫咪宠物主人, 搭建猫咪血库, 互相帮助, 为自己和他人的猫在有输血需求的时候能及时获得协助.">
+  <meta property="og:image" content="https://hero-cats-cn.github.io/images/logo_400.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="400">
+  <meta property="og:image:height" content="400">
+  <meta property="og:title" content="中国猫咪血库">
+  <meta property="og:description" content="基于国内现在没有猫咪血库, 这个平台能帮助有输血需求的宠物主寻找本地愿意带自己家宠物猫献血的其他宠物主人.">
+  <link rel="shortcut icon" type="image/png" href="images/favicon-192.png"/>
+  <title>中国英雄猫 - 猫咪血库</title>
+  
+<style type="text/css">
+html{
+  height:100%;
+}
+body{
+  height:100%; 
+  font-family: Tahoma, Arial, Helvetica, "Microsoft Yahei", SimSun, STXihei, sans-serif;
+  background-color: #282A35;
+  color: white;
+  overflow: auto;
+}
+#intro, #selections {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+#intro h1, #selections h1 {
+  font-size: 2.5em;
+  font-weight: 700;
+}
+#intro h1 {
+  color: #ff7d30;
+}
+#introText {
+  font-size: 1.1em;
+}
+.panel {
+  padding: 1em;
+  margin-top:1em;
+  margin-bottom:1em;
+  background-color: blueviolet;
+  box-shadow: 0 4px 10px 0 rgb(255 255 255 / 20%), 0 4px 20px 0 rgb(255 255 255 / 19%);
+}
+#footer {
+  text-align: center;
+  padding: 0.1em;
+}
+#selections {
+  margin-top: 3em;
+  margin-bottom: 1em;
+}
+#selections h1 {
+  color: #58c9ff;
+}
+.btn {
+  border: 2px solid;
+  background-color: white;
+  margin: 3px 2px;
+  padding: 14px 28px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+}
+.province {
+  border-color: #9bcffa;
+  color: dodgerblue;
+}
+.province:hover {
+  background-color: #9bcffa;
+  color: white;
+}
+.city {
+  border-color: #ff2a50;
+  color: red;
+}
+.city:hover {
+  background-color: #ff2a50;
+  color: white;
+}
+.nocity {
+  border-color: #e7e7e7;
+  color: black;
+}
+.nocity:hover {
+  background: #e7e7e7;
+}
+#map {
+  height:60%; 
+  border-style: groove;
+}
+.shrink {
+  display: none;
+}
+.expand {
+  display: block;
+  background-color: #62d5fd;
+}
+#modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 70px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: white;
+
+}
+#qrcode {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  height: auto;
+}
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #05386b;
+  padding-top: 10px;
+  font-size: 2em;
+}
+#qrcode, #caption, .expand {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+#close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #111;
+  font-size: 3em;
+  font-weight: bold;
+  transition: 0.3s;
+}
+#close:hover,
+#close:focus {
+  color: #777;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  #qrcode {
+    width: 100%;
+  }
+}
+
+</style>
+
+</head>
+<body>
+  <div id="intro">
+    <h1>英雄猫咪简介</h1>
+    <div id="introText">
+      <p>
+        猫咪有三种血型（A，B，AB），不同血型之间无法兼容，让猫血变得昂贵稀缺，催生了血猫这个黑色产业链。
+      </p>
+      <p>
+        许多商家人工催肥小猫后大量抽血，这些过度肥胖的猫存在意义就是成为血袋子牟利。频繁大量的抽血会让猫咪引发各种疾病，失去利用价值后商家弃之如敝。这些人普遍和宠物医院有合作，只要医院有输血需求，商家就会带猫咪去卖血。这些猫大多都是流浪猫和无良繁殖的后院猫。
+      </p>
+      <p>
+        基于国内现在没有猫咪血库，特别是稀有血型很难短时间内找到合适的献血猫，结果就是自家猫耽误治疗和去用血猫的血来续命。
+      </p>
+      <p style="color: #00ff44;"><i>这个平台希望能为有需求的朋友提供互助的便利渠道，及时给到有输血需求的宠物主联系信息。</i></p>
+      <div class="panel">请各位求助者，认真辨别献血猫及主人的身份，切勿使用来历不明的猫血；也请各位英雄猫咪主人认真做好功课，在自家猫咪身体健康无隐患的情况下给予求助者帮助，切勿因为热心与疏忽造成得不偿失的严重后果。</div>
+    </div>
+    
+  </div>
+
+  <div id="selections">
+    <h1>猫咪所在地</h1>
+
+    <div id="locations"></div>
+  </div>
+
+  <div id="map"></div>
+
+  <!-- The Modal -->
+  <div id="modal">
+    <span id="close">&times;</span>
+    <img id="qrcode">
+    <div id="caption"></div>
+  </div>
+
+  <div id="footer">
+    <h5> &copy;2022 如有任何疑问，欢迎联系我们：️maomixueku@outlook.com</h5>
+  </div>
+
+<script type="text/javascript">
+
+const wxGroups = [
+{city: '北京', qr: 'beijing', point: [116.4133836971231,39.910924547299565]},
+{city: '天津', qr: '', point: [117.2080927529767,39.09110259843554]},
+{city: '上海', qr: '', point: [121.48053886017651,31.235929042252014]},
+{city: '重庆', qr: '', point: [106.55843415537664,29.568996245338923]},
+{province: '河北省', cities: [
+{city: '石家庄', qr: '', point: [114.52153190157445,38.0483119268727]},
+{city: '唐山', qr: '', point: [118.18645947203979,39.63658372414733]},
+{city: '秦皇岛', qr: '', point: [119.5259671942601,39.89472719832739]},
+{city: '邯郸', qr: '', point: [114.5456282282352,36.631262731204046]},
+{city: '邢台', qr: '', point: [114.51146225612979,37.07668595096609]},
+{city: '保定', qr: '', point: [115.47146383768579,38.87998776845534]},
+{city: '张家口', qr: '', point: [114.89257223145165,40.7732372026915]},
+{city: '承德', qr: '', point: [117.96939750996681,40.95785601233803]},
+{city: '沧州', qr: '', point: [116.84558075595014,38.310215141107044]},
+{city: '廊坊', qr: '', point: [116.69058173342549,39.54336666275853]},
+{city: '衡水', qr: '', point: [115.6754061376161,37.745191408077424]}
+]},
+{province: '山西省', cities: [
+{city: '太原', qr: '', point: [112.55639149167204,37.87698902884778]},
+{city: '大同', qr: '', point: [113.37336244450448,40.102783001859564]},
+{city: '阳泉', qr: '', point: [113.58761666287546,37.862360847859385]},
+{city: '长治', qr: '', point: [113.12255886984902,36.2012683721548]},
+{city: '晋城', qr: '', point: [112.85857823132879,35.49628458647257]},
+{city: '朔州', qr: '', point: [112.4393709396677,39.337108370541735]},
+{city: '晋中', qr: '', point: [112.75959475565928,37.69283940975972]},
+{city: '运城', qr: '', point: [111.01338945447925,35.03270691290923]},
+{city: '忻州', qr: '', point: [112.74062416023847,38.42238338517772]},
+{city: '临汾', qr: '', point: [111.52553022403073,36.093741895419726]},
+{city: '吕梁', qr: '', point: [111.15044967529185,37.524497749577115]}
+]},
+{province: '内蒙古自治区', cities: [
+{city: '呼和浩特', qr: '', point: [111.75550856170946,40.84842299711348]},
+{city: '包头', qr: '', point: [109.95979863201062,40.62714122474678]},
+{city: '乌海', qr: '', point: [106.80039104999656,39.6620063648907]},
+{city: '赤峰', qr: '', point: [118.8955203975195,42.2616861034116]},
+{city: '通辽', qr: '', point: [122.25052178737633,43.657980083916655]},
+{city: '鄂尔多斯', qr: '', point: [109.78744317923602,39.61448231394889]},
+{city: '呼伦贝尔', qr: '', point: [119.78486907317954,49.172732795190655]},
+{city: '巴彦淖尔', qr: '', point: [107.39439808372491,40.7493594895728]},
+{city: '乌兰察布', qr: '', point: [113.13946767446333,41.00074832767381]}
+]},
+{province: '辽宁省', cities: [
+{city: '沈阳', qr: '', point: [123.47109664482264,41.68383006919066]},
+{city: '大连', qr: '', point: [121.62163148459285,38.9189536667856]},
+{city: '鞍山', qr: '', point: [123.00137251399407,41.11505359694933]},
+{city: '抚顺', qr: '', point: [123.9643746156145,41.88596959305694]},
+{city: '本溪', qr: '', point: [123.69250712420832,41.49291646055291]},
+{city: '丹东', qr: '', point: [124.36154728159079,40.00640870559368]},
+{city: '锦州', qr: '', point: [121.13259630055518,41.10093149946208]},
+{city: '营口', qr: '', point: [122.22579880279181,40.63070304275062]},
+{city: '阜新', qr: '', point: [121.67640799865809,42.02802190131842]},
+{city: '辽阳', qr: '', point: [123.24336640651318,41.27416129045421]},
+{city: '盘锦', qr: '', point: [122.1771181899173,40.72579099974712]},
+{city: '铁岭', qr: '', point: [123.73236520917769,42.22994799718447]},
+{city: '朝阳', qr: '', point: [120.45749949793277,41.57982086475567]},
+{city: '葫芦岛', qr: '', point: [120.8433983399283,40.71736443636189]}
+]},
+{province: '吉林省', cities: [
+{city: '长春', qr: '', point: [125.3306020759069,43.82195350104314]},
+{city: '吉林', qr: '', point: [126.55563450495482,43.84356783457924]},
+{city: '四平', qr: '', point: [124.35648155715893,43.171993571561]},
+{city: '辽源', qr: '', point: [125.15042516688747,42.89405500574631]},
+{city: '通化', qr: '', point: [125.94660627598029,41.733815801613424]},
+{city: '白山', qr: '', point: [126.42108639550088,41.94988401959104]},
+{city: '松原', qr: '', point: [124.83148187569292,45.14740419341382]},
+{city: '白城', qr: '', point: [122.8455906084976,45.62550435999602]}
+]},
+{province: '黑龙江省', cities: [
+{city: '哈尔滨', qr: '', point: [126.54161509031663,45.808825827952184]},
+{city: '齐齐哈尔', qr: '', point: [123.92457086841536,47.3599771860153]},
+{city: '黑河', qr: '', point: [127.53548988621854,50.25127231175015]},
+{city: '大庆', qr: '', point: [125.10865763402039,46.59363317672175]},
+{city: '伊春', qr: '', point: [128.84754638019822,47.733318457230936]},
+{city: '鹤岗', qr: '', point: [130.3044328986694,47.35605615768509]},
+{city: '佳木斯', qr: '', point: [130.327359092573,46.80568999085779]},
+{city: '双鸭山', qr: '', point: [131.14797357255904,46.68238905377044]},
+{city: '七台河', qr: '', point: [131.01154459102744,45.77630032154785]},
+{city: '鸡西', qr: '', point: [130.97561865876668,45.300872317823895]},
+{city: '牡丹江', qr: '', point: [129.6395397783469,44.55624570898632]},
+{city: '绥化', qr: '', point: [126.97535687530133,46.6600321798244]}
+]},
+{province: '江苏省', cities: [
+{city: '南京', qr: '', point: [118.80242172124585,32.06465288561847]},
+{city: '徐州', qr: '', point: [117.29057543439453,34.21266655011306]},
+{city: '连云港', qr: '', point: [119.22862133316607,34.60224952526725]},
+{city: '宿迁', qr: '', point: [118.28157403570837,33.96774971569008]},
+{city: '淮安', qr: '', point: [119.11976413248364,33.55666778025387]},
+{city: '盐城', qr: '', point: [120.167544265761,33.355100917626196]},
+{city: '扬州', qr: '', point: [119.41941890822997,32.40067693609037]},
+{city: '泰州', qr: '', point: [119.9295663378548,32.4606750493083]},
+{city: '南通', qr: '', point: [120.90159173866185,31.98654943120089]},
+{city: '镇江', qr: '', point: [119.43048944567383,32.19471592052375]},
+{city: '常州', qr: '', point: [119.98148471327892,31.815795653327836]},
+{city: '无锡', qr: '', point: [120.31858328810601,31.498809732685714]},
+{city: '苏州', qr: '', point: [120.59241222959322,31.303564074441766]}
+]},
+{province: '浙江省', cities: [
+{city: '杭州', qr: '', point: [120.21551180372168,30.25308298169347]},
+{city: '宁波', qr: '', point: [121.63084278185603,29.866068124069646]},
+{city: '湖州', qr: '', point: [120.09451660915789,30.898963937294184]},
+{city: '嘉兴', qr: '', point: [120.76355182586005,30.750974830920143]},
+{city: '舟山', qr: '', point: [122.21355631852045,29.99091168016034]},
+{city: '绍兴', qr: '', point: [120.59002264710614,30.057657361054257]},
+{city: '衢州', qr: '', point: [118.86659674035565,28.975545802265025]},
+{city: '金华', qr: '', point: [119.65343619052916,29.084639385513697]},
+{city: '台州', qr: '', point: [121.42743470427969,28.66219405599615]},
+{city: '温州', qr: '', point: [120.70647689035565,28.00108540447221]},
+{city: '丽水', qr: '', point: [119.9295730584414,28.473278180563412]}
+]},
+{province: '安徽省', cities: [
+{city: '合肥', qr: '', point: [117.23344266497664,31.826577833686887]},
+{city: '芜湖', qr: '', point: [118.43943137653523,31.358536655799266]},
+{city: '蚌埠', qr: '', point: [117.39551332813694,32.921523704350825]},
+{city: '淮南', qr: '', point: [117.00638885071616,32.63184739905333]},
+{city: '马鞍山', qr: '', point: [118.5135795794315,31.676265597609103]},
+{city: '淮北', qr: '', point: [116.8045372670298,33.96165630027632]},
+{city: '铜陵', qr: '', point: [117.81847679445747,30.95123323991339]},
+{city: '安庆', qr: '', point: [117.1212827542562,30.53922247681024]},
+{city: '黄山', qr: '', point: [118.34543725314781,29.721889786591692]},
+{city: '滁州', qr: '', point: [118.33940613596579,32.26127087204081]},
+{city: '阜阳', qr: '', point: [115.82043612491321,32.89606099485221]},
+{city: '宿州', qr: '', point: [116.97054394561262,33.65209532645213]},
+{city: '六安', qr: '', point: [116.52640966418569,31.741450815322555]},
+{city: '亳州', qr: '', point: [115.7844632112745,33.850642695788835]},
+{city: '池州', qr: '', point: [117.50208200570214,30.68054196371511]},
+{city: '宣城', qr: '', point: [118.76553424276743,30.94660154529291]}
+]},
+{province: '福建省', cities: [
+{city: '厦门', qr: '', point: [118.09643549976651,24.485406605176305]},
+{city: '福州', qr: '', point: [119.30346983854001,26.080429420698078]},
+{city: '南平', qr: '', point: [118.08735102597767,27.389104987898513]},
+{city: '三明', qr: '', point: [117.64552116782143,26.269736515991838]},
+{city: '莆田', qr: '', point: [119.0145209781265,25.45986545592271]},
+{city: '泉州', qr: '', point: [118.68244626680422,24.879952330498313]},
+{city: '漳州', qr: '', point: [117.65357645298785,24.51892979117087]},
+{city: '龙岩', qr: '', point: [117.02344756677536,25.081219844871676]},
+{city: '宁德', qr: '', point: [119.55451074542829,26.672241711408567]}
+]},
+{province: '江西省', cities: [
+{city: '南昌', qr: '', point: [115.86458944231661,28.68945529506072]},
+{city: '九江', qr: '', point: [115.96066124030492,29.666660847999456]},
+{city: '景德镇', qr: '', point: [117.18457644638579,29.274247711040953]},
+{city: '鹰潭', qr: '', point: [117.0755754270272,28.265787063191418]},
+{city: '新余', qr: '', point: [114.9235346513963,27.823578697788587]},
+{city: '萍乡', qr: '', point: [113.89369655407103,27.664752547951164]},
+{city: '赣州', qr: '', point: [114.9405033729825,25.835176103497655]},
+{city: '上饶', qr: '', point: [117.94945960312224,28.460625921851733]},
+{city: '抚州', qr: '', point: [116.36453876864373,27.954892253419565]},
+{city: '宜春', qr: '', point: [114.4235636759064,27.820856421848216]},
+{city: '吉安', qr: '', point: [115.00051072001253,27.119726826070448]}
+]},
+{province: '山东省', cities: [
+{city: '济南', qr: '', point: [117.12639941261048,36.65655420178723]},
+{city: '青岛', qr: '', point: [120.38945519114627,36.072227496663224]},
+{city: '聊城', qr: '', point: [115.99158784830443,36.46275818769411]},
+{city: '德州', qr: '', point: [116.36555674397471,37.441308454576266]},
+{city: '东营', qr: '', point: [118.68138493513693,37.43964182632334]},
+{city: '淄博', qr: '', point: [118.06145253489896,36.81908568332188]},
+{city: '潍坊', qr: '', point: [119.16837791142822,36.71265155126753]},
+{city: '烟台', qr: '', point: [121.45441541730195,37.470038383730525]},
+{city: '威海', qr: '', point: [122.12754097831325,37.5164305480148]},
+{city: '日照', qr: '', point: [119.53341540456555,35.42283899843767]},
+{city: '临沂', qr: '', point: [118.36353300501388,35.11067124236514]},
+{city: '枣庄', qr: '', point: [117.33054194483897,34.815994048435115]},
+{city: '济宁', qr: '', point: [116.59361234853988,35.420177394529645]},
+{city: '泰安', qr: '', point: [117.0944948347959,36.2058580448846]},
+{city: '滨州', qr: '', point: [117.9774040171467,37.3881961960769]},
+{city: '菏泽', qr: '', point: [115.48754503343376,35.23940742476551]}
+]},
+{province: '河南省', cities: [
+{city: '郑州', qr: '', point: [113.63141920733915,34.75343885045448]},
+{city: '开封', qr: '', point: [114.32076511162192,34.80401391129182]},
+{city: '洛阳', qr: '', point: [112.4594212983115,34.62426277921943]},
+{city: '平顶山', qr: '', point: [113.19952856052156,33.772050748691015]},
+{city: '安阳', qr: '', point: [114.39950042177432,36.10594098401491]},
+{city: '鹤壁', qr: '', point: [114.30359364247649,35.7523574114]},
+{city: '新乡', qr: '', point: [113.81159378076424,35.19656440899276]},
+{city: '焦作', qr: '', point: [113.24854783457334,35.22096325403899]},
+{city: '濮阳', qr: '', point: [115.03559747034215,35.76759302890629]},
+{city: '许昌', qr: '', point: [113.85847553685502,34.04143161161871]},
+{city: '漯河', qr: '', point: [114.02342077764726,33.5877107071022]},
+{city: '三门峡', qr: '', point: [111.2065332238741,34.778327249459984]},
+{city: '南阳', qr: '', point: [112.53450131351325,32.99656220465144]},
+{city: '商丘', qr: '', point: [115.66244933826238,34.4202016658586]},
+{city: '周口', qr: '', point: [114.7079826661061,33.643083575264406]},
+{city: '驻马店', qr: '', point: [114.02847078173271,33.01784241674367]},
+{city: '信阳', qr: '', point: [114.09748283304512,32.15301454753105]}
+]},
+{province: '湖北省', cities: [
+{city: '武汉', qr: '', point: [114.31158155473231,30.598466736400987]},
+{city: '十堰', qr: '', point: [110.80452956069568,32.63506185840116]},
+{city: '襄阳', qr: '', point: [112.12853720100244,32.014796804669224]},
+{city: '荆门', qr: '', point: [112.20639298023002,31.041732575569622]},
+{city: '孝感', qr: '', point: [113.96346265773938,30.924526261070227]},
+{city: '黄冈', qr: '', point: [114.87849048410779,30.4593588576181]},
+{city: '鄂州', qr: '', point: [114.90160738827099,30.39657217331699]},
+{city: '黄石', qr: '', point: [115.04553290894361,30.205207848941598]},
+{city: '咸宁', qr: '', point: [114.32851909026844,29.847055947646492]},
+{city: '荆州', qr: '', point: [112.24552262926137,30.340842107742912]},
+{city: '宜昌', qr: '', point: [111.29254921035434,30.697446484492378]},
+{city: '随州', qr: '', point: [113.38945001822157,31.6965167723283]}
+]},
+{province: '湖南省', cities: [
+{city: '长沙', qr: '', point: [112.94547319535287,28.23488939994364]},
+{city: '衡阳', qr: '', point: [112.57844721325992,26.899576139189122]},
+{city: '张家界', qr: '', point: [110.48553254695402,29.122815562551878]},
+{city: '常德', qr: '', point: [111.70545217995837,29.037749999406877]},
+{city: '益阳', qr: '', point: [112.36151595471031,28.559711178489888]},
+{city: '岳阳', qr: '', point: [113.13548942422142,29.3631782939259]},
+{city: '株洲', qr: '', point: [113.14047079776427,27.833567639016444]},
+{city: '湘潭', qr: '', point: [112.95046418076468,27.835702227135585]},
+{city: '郴州', qr: '', point: [113.02146049909462,25.776683273601865]},
+{city: '永州', qr: '', point: [111.61945505792227,26.425864117900094]},
+{city: '邵阳', qr: '', point: [111.474432885931,27.245270272808565]},
+{city: '怀化', qr: '', point: [110.00851426537254,27.575160902978517]},
+{city: '娄底', qr: '', point: [112.00150349288418,27.703208596991583]}
+]},
+{province: '广东省', cities: [
+{city: '广州', qr: '', point: [113.27143134445974,23.135336306695006]},
+{city: '深圳', qr: '', point: [114.06455183658751,22.548456637984177]},
+{city: '韶关', qr: '', point: [113.60352734562261,24.815881278583017]},
+{city: '珠海', qr: '', point: [113.58255478654918,22.27656465424921]},
+{city: '汕头', qr: '', point: [116.68852864054833,23.35909171772515]},
+{city: '佛山', qr: '', point: [113.12851219549718,23.02775875078891]},
+{city: '江门', qr: '', point: [113.08855619524043,22.584603880965]},
+{city: '湛江', qr: '', point: [110.36555441392824,21.276723439012073]},
+{city: '茂名', qr: '', point: [110.931542579969,21.669064031332095]},
+{city: '肇庆', qr: '', point: [112.47148894063035,23.052888771125616]},
+{city: '惠州', qr: '', point: [114.4235580165817,23.116358854725593]},
+{city: '梅州', qr: '', point: [116.12953737612247,24.294177532206206]},
+{city: '汕尾', qr: '', point: [115.38155260365083,22.79126303654673]},
+{city: '河源', qr: '', point: [114.70744627290641,23.749684370959752]},
+{city: '阳江', qr: '', point: [111.98848929181268,21.864339726138933]},
+{city: '清远', qr: '', point: [113.06246832527266,23.688230292088083]},
+{city: '东莞', qr: '', point: [113.75842045787648,23.02730841164339]},
+{city: '中山', qr: '', point: [113.39942236263188,22.5223146707905]},
+{city: '潮州', qr: '', point: [116.62947017362819,23.662623192615886]},
+{city: '揭阳', qr: '', point: [116.37851218033846,23.555740488275585]},
+{city: '云浮', qr: '', point: [112.05151269959146,22.920911970342857]}
+]},
+{province: '广西壮族自治区', cities: [
+{city: '南宁', qr: '', point: [108.37345082581861,22.822606601187154]},
+{city: '桂林', qr: '', point: [110.18619487315159,25.24169878354397]},
+{city: '柳州', qr: '', point: [109.43442194634564,24.331961386852413]},
+{city: '梧州', qr: '', point: [111.28551681182014,23.48274528113516]},
+{city: '贵港', qr: '', point: [109.60552031033306,23.117448382037534]},
+{city: '玉林', qr: '', point: [110.1884531233724,22.659830509953142]},
+{city: '钦州', qr: '', point: [108.66058016842224,21.986593539484296]},
+{city: '北海', qr: '', point: [109.126533212566,21.48683649576942]},
+{city: '防城港', qr: '', point: [108.360418838298,21.6930052899694]},
+{city: '崇左', qr: '', point: [107.3715202061015,22.383117234663302]},
+{city: '百色', qr: '', point: [106.62458932565383,23.908185934295958]},
+{city: '河池', qr: '', point: [108.09149994498661,24.698911731272894]},
+{city: '来宾', qr: '', point: [109.22745819590091,23.75654676260728]},
+{city: '贺州', qr: '', point: [111.57352631416218,24.409450902865487]}
+]},
+{province: '海南省', cities: [
+{city: '海口', qr: '', point: [110.2067198964201,20.052113086180366]},
+{city: '三亚', qr: '', point: [109.51855670139908,18.258736291747855]},
+{city: '三沙', qr: '', point: [112.34048204137058,16.838953334409123]},
+{city: '儋州', qr: '', point: [109.58745583568611,19.527146110044196]}
+]},
+{province: '四川省', cities: [
+{city: '成都', qr: '', point: [104.07274727406208,30.578993724029967]},
+{city: '广元', qr: '', point: [105.85042318166482,32.44161630531542]},
+{city: '绵阳', qr: '', point: [104.6855618607612,31.473663048745863]},
+{city: '德阳', qr: '', point: [104.40441936496448,31.133115003656755]},
+{city: '南充', qr: '', point: [106.11750261487227,30.843782508337036]},
+{city: '广安', qr: '', point: [106.63955268233484,30.461746110678995]},
+{city: '遂宁', qr: '', point: [105.5994215306444,30.53909767110912]},
+{city: '内江', qr: '', point: [105.06458802499718,29.58588653832045]},
+{city: '乐山', qr: '', point: [103.7725376036347,29.55794071745811]},
+{city: '自贡', qr: '', point: [104.78444884671711,29.345584921327575]},
+{city: '泸州', qr: '', point: [105.4485240693266,28.87766830360723]},
+{city: '宜宾', qr: '', point: [104.6494037048691,28.75800702855183]},
+{city: '攀枝花', qr: '', point: [101.72554117091441,26.58803317333301]},
+{city: '巴中', qr: '', point: [106.7515853031645,31.872888585956545]},
+{city: '达州', qr: '', point: [107.47459385897544,31.214307723927455]},
+{city: '资阳', qr: '', point: [104.6344353416441,30.13495655925314]},
+{city: '眉山', qr: '', point: [103.85656331579456,30.082526119421058]},
+{city: '雅安', qr: '', point: [103.04954262360451,30.01679254570607]}
+]},
+{province: '贵州省', cities: [
+{city: '贵阳', qr: '', point: [106.63657676352776,26.653324822309752]},
+{city: '六盘水', qr: '', point: [104.8375546023468,26.598833108257494]},
+{city: '遵义', qr: '', point: [107.03792295677086,27.728325334416603]},
+{city: '安顺', qr: '', point: [105.95441712388904,26.25925237871499]},
+{city: '毕节', qr: '', point: [105.2985887950112,27.29021508342595]},
+{city: '铜仁', qr: '', point: [109.19643889817665,27.73778645640524]}
+]},
+{province: '云南省', cities: [
+{city: '昆明', qr: '', point: [102.83944512326053,24.886272111644136]},
+{city: '曲靖', qr: '', point: [103.80243482794681,25.496406931543667]},
+{city: '玉溪', qr: '', point: [102.55356029311,24.35771094244625]},
+{city: '丽江', qr: '', point: [100.23246452903453,26.860657438064884]},
+{city: '昭通', qr: '', point: [103.72351177196889,27.34408386024681]},
+{city: '普洱', qr: '', point: [100.97256981472799,22.830979186010275]},
+{city: '临沧', qr: '', point: [100.09544042014869,23.89046855627851]},
+{city: '保山', qr: '', point: [99.16801175601306,25.11785803166449]}
+]},
+{province: '陕西省', cities: [
+{city: '西安', qr: '', point: [108.94646555063274,34.34726881662395]},
+{city: '延安', qr: '', point: [109.50118366576285,36.656089661066176]},
+{city: '铜川', qr: '', point: [108.95240424835922,34.902637080502906]},
+{city: '渭南', qr: '', point: [109.51658960525897,34.50571551675255]},
+{city: '咸阳', qr: '', point: [108.71542245143303,34.335476293368586]},
+{city: '宝鸡', qr: '', point: [107.2445753670404,34.36891564286998]},
+{city: '汉中', qr: '', point: [107.02943020926463,33.073799907833795]},
+{city: '榆林', qr: '', point: [109.74161603381395,38.290883835484046]},
+{city: '商洛', qr: '', point: [109.92441788136406,33.87863385220776]},
+{city: '安康', qr: '', point: [109.03560108265746,32.69051277057377]}
+]},
+{province: '甘肃省', cities: [
+{city: '兰州', qr: '', point: [103.84052119633628,36.067234693545565]},
+{city: '嘉峪关', qr: '', point: [98.29620384300111,39.77796014739059]},
+{city: '金昌', qr: '', point: [102.19460568669837,38.52582009209263]},
+{city: '白银', qr: '', point: [104.1444508283435,36.55082533041454]},
+{city: '天水', qr: '', point: [105.73141674566955,34.58741188165064]},
+{city: '酒泉', qr: '', point: [98.50068521606795,39.73846908071564]},
+{city: '张掖', qr: '', point: [100.45641147405634,38.932066007004934]},
+{city: '武威', qr: '', point: [102.64455434036918,37.93437780815811]},
+{city: '庆阳', qr: '', point: [107.6493856959542,35.71521598356201]},
+{city: '平凉', qr: '', point: [106.67144234827796,35.549232050463516]},
+{city: '定西', qr: '', point: [104.63242008306302,35.586832926561875]},
+{city: '陇南', qr: '', point: [104.9668643447692,33.37603215910919]}
+]},
+{province: '青海省', cities: [
+{city: '西宁', qr: '', point: [101.78445017050855,36.62338469651661]},
+{city: '海东', qr: '', point: [102.41503557578936,36.48017021268231]}
+]},
+{province: '西藏自治区', cities: [
+{city: '拉萨', qr: '', point: [91.17845425628477,29.65948787983075]},
+{city: '日喀则', qr: '', point: [88.89370303482552,29.275657822511512]},
+{city: '昌都', qr: '', point: [97.17733324895293,31.148661810810207]},
+{city: '林芝', qr: '', point: [94.36805828713257,29.654042176951524]},
+{city: '山南', qr: '', point: [91.77867513851903,29.243026939249226]},
+{city: '那曲', qr: '', point: [92.0573384981749,31.482438388454657]}
+]},
+{province: '宁夏回族自治区', cities: [
+{city: '银川', qr: '', point: [106.23849358740017,38.492460055509596]},
+{city: '石嘴山', qr: '', point: [106.3906004255049,38.98968283991508]},
+{city: '吴忠', qr: '', point: [106.20537126663626,38.00371291345338]},
+{city: '中卫', qr: '', point: [105.20357090088713,37.50570141870293]},
+{city: '固原', qr: '', point: [106.24857742607188,36.02161725801098]}
+]},
+{province: '新疆维吾尔自治区', cities: [
+{city: '乌鲁木齐', qr: '', point: [87.62443993536046,43.830763204290484]},
+{city: '克拉玛依', qr: '', point: [84.89590053887504,45.58567523781376]},
+{city: '吐鲁番', qr: '', point: [89.1972972460079,42.95698484877124]},
+{city: '哈密', qr: '', point: [93.52121554028504,42.82582436811265]}
+]}
+];
+
+const locations = document.getElementById("locations");
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("qrcode");
+const captionText = document.getElementById("caption");
+const closeBtn = document.getElementById("close");
+
+const strHasGroup1 = '扫码进<b><span style="color:red;">';
+const strHasGroup2 = '</span></b>英雄猫咪群';
+const strNoGroup = '<p>可能还没有群。</p><p>你可以建个群，然后把群二维码发至邮箱 <span style="color:red;">maomixueku @ outlook.com</span>，我们会➕到列表。</p><p>如有任何疑问也可循此途径联系我们❤️</p><h5> &copy;2022</h5>';
+
+function showQR(event){
+  const btn = event.target;
+  const qr = btn.value;
+  
+  if(qr){
+    modalImg.src = "images/qr/" + qr + ".png";
+    captionText.innerHTML = strHasGroup1 + btn.innerHTML + strHasGroup2;
+  }
+  else{
+    captionText.innerHTML = strNoGroup;
+  }
+  modal.style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+function closeQR(event) {
+  modal.style.display = "none";
+  modalImg.src = "";
+  captionText.innerHTML = "";
+  document.body.style.overflow = "auto";
+}
+
+function createButtonForCity(loc){
+  const btn = document.createElement("button");
+  btn.setAttribute("class", "btn city");
+  btn.value = loc.qr;
+  btn.innerHTML = loc.city;
+  btn.addEventListener('click', showQR);
+  return btn;
+}
+
+function handleProvinceGroup(event){
+  const provinceButton = event.target;
+  const citiesBlock = document.getElementById(provinceButton.value);
+
+  if(citiesBlock.getAttribute("class") == "shrink"){
+    provinceButton.style.opacity = 0.2;
+    citiesBlock.setAttribute("class", "expand");
+  }
+  else{
+    provinceButton.style.opacity = 1;
+    citiesBlock.setAttribute("class", "shrink");
+  }
+}
+function createButtonForProvince(loc){
+  const btn = document.createElement("button");
+  btn.setAttribute("class", "btn province");
+  btn.innerHTML = loc.province;
+  btn.addEventListener('click', handleProvinceGroup);
+  return btn;
+}
+function createButtonNoLocation(){
+  const btn = document.createElement("button");
+  btn.setAttribute("class", "btn nocity");
+  btn.innerHTML = "不在列表中";
+  btn.addEventListener('click', showQR);
+  locations.appendChild(btn);
+}
+
+function loadHtml(){
+  wxGroups.forEach((loc, idx) => {
+    if(loc.province){
+      let provinceButton = createButtonForProvince(loc);
+      provinceButton.value = 'p' + idx;
+      locations.appendChild(provinceButton);
+      let citiesBlock = document.createElement("div");
+      citiesBlock.id = provinceButton.value;
+      citiesBlock.setAttribute("class", "shrink");
+      loc.cities.forEach((cityEntry) => {
+        citiesBlock.appendChild(createButtonForCity(cityEntry));
+      });
+      locations.appendChild(citiesBlock);
+    }
+    else{
+      let cityEntry = loc;
+      locations.appendChild(createButtonForCity(cityEntry));
+    }
+  });
+
+  createButtonNoLocation();
+  closeBtn.addEventListener('click', closeQR);
+}
+
+function initializeMap() {
+  const map = new BMap.Map('map');
+  const center = new BMap.Point(104, 38);
+  map.centerAndZoom(center, 5);
+  map.enableScrollWheelZoom(true);
+
+  const windowOpts = {
+    width : 0,
+    height: 0,
+    enableMessage: false
+  }
+  const infoWindow = new BMap.InfoWindow(createButtonForCity(wxGroups[0]), windowOpts);
+
+  function setMarkerOnMap(cityEntry){
+    const cityName = cityEntry.city;
+    const point = new BMap.Point(cityEntry.point[0], cityEntry.point[1]);
+    const icon = new BMap.Icon("images/marker.png", new BMap.Size(40, 47), {
+      anchor: new BMap.Size(12, 25)});
+    const marker = new BMap.Marker(point, {icon: icon});
+    map.addOverlay(marker);
+    const label = new BMap.Label(cityName, {offset:new BMap.Size(2,-21)});
+    marker.setLabel(label);
+    marker.addEventListener('click', (e) => {
+      const btn = infoWindow.getContent();
+      btn.value = cityEntry.qr;
+      btn.innerHTML = cityName;
+      map.openInfoWindow(infoWindow, point);
+    });
+  }
+
+  wxGroups.forEach((loc) => {
+    if(loc.province){
+      loc.cities.forEach(setMarkerOnMap);
+    }
+    else{
+      setMarkerOnMap(loc);
+    }
+  });
+}
+
+function loadMap() {
+  const script = document.createElement("script");  
+  script.src = "https://api.map.baidu.com/api?v=3.0&ak=VAYAkAg1iSfXrFI1altZEfUBNToUAUHk&callback=initializeMap";
+  document.body.appendChild(script);
+}
+
+loadHtml();
+window.onload = loadMap;
+
+</script>
+
+</body>
+</html>
