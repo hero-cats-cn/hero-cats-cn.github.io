@@ -672,8 +672,8 @@ function initializeMap() {
   function setMarkerOnMap(cityEntry){
     const cityName = cityEntry.city;
     const point = new BMap.Point(cityEntry.point[0], cityEntry.point[1]);
-    const icon = new BMap.Icon("images/marker.png", new BMap.Size(40, 47), {
-      anchor: new BMap.Size(12, 25)});
+    const icon = new BMap.Icon("images/marker.png", new BMap.Size(50, 50), {
+      anchor: new BMap.Size(25, 25)});
     const marker = new BMap.Marker(point, {icon: icon});
     map.addOverlay(marker);
     const label = new BMap.Label(cityName, {offset:new BMap.Size(2,-21)});
