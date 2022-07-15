@@ -11,7 +11,7 @@
   <meta property="og:image:height" content="400">
   <meta property="og:title" content="中国猫咪血库">
   <meta property="og:description" content="基于国内现在没有猫咪血库, 这个平台能帮助有输血需求的宠物主寻找本地愿意带自己家宠物猫献血的其他宠物主人.">
-  <link rel="shortcut icon" type="image/png" href="images/favicon-192.png"/>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <title>中国英雄猫 - 猫咪血库</title>
   
 <style type="text/css">
@@ -111,11 +111,10 @@ body{
   bottom: 0;
   overflow: auto;
   background-color: white;
-
 }
 #qrcode {
   margin: auto;
-  display: block;
+  display: none;
   width: 80%;
   max-width: 700px;
   height: auto;
@@ -200,7 +199,7 @@ body{
   <!-- The Modal -->
   <div id="modal">
     <span id="close">&times;</span>
-    <img id="qrcode">
+    <img id="qrcode" src="" alt="二维码">
     <div id="caption"></div>
   </div>
 
@@ -579,10 +578,12 @@ function showQR(event){
   const qr = btn.value;
   
   if(qr){
-    modalImg.src = "images/qr/" + qr + ".png";
+    createQR(qr);
+    modalImg.style.display = "block";
     captionText.innerHTML = strHasGroup1 + btn.innerHTML + strHasGroup2;
   }
   else{
+    modalImg.style.display = "none";
     captionText.innerHTML = strNoGroup;
   }
   modal.style.display = "block";
@@ -590,9 +591,37 @@ function showQR(event){
 }
 function closeQR(event) {
   modal.style.display = "none";
-  modalImg.src = "";
-  captionText.innerHTML = "";
   document.body.style.overflow = "auto";
+}
+
+function createQR(qr){
+  const cropLeft = 90, cropTop = 210, cropWidth = 900, cropHeight = 1290;
+  const mosaicLeft = 36, mosaicTop = 34, mosaicWidth = 180, mosaicHeight = 180, blockSize = 15;
+  const canvas = document.createElement('canvas');
+  canvas.width = cropWidth;
+  canvas.height = cropHeight;
+  const context = canvas.getContext("2d");
+
+  const qrImg = new Image();
+  qrImg.addEventListener('load', drawQR);
+  qrImg.src = "images/qr/" + qr + ".png";
+
+  function drawQR(){
+    context.drawImage(qrImg, cropLeft, cropTop, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+    
+    const midPoint = Math.floor(blockSize / 2);
+    const rgbStrStart = 'rgb(', rgbStrMiddle = ',', rgbStrEnd = ')';
+
+    for(let y = mosaicTop; y < mosaicTop + mosaicHeight; y += blockSize){
+      for(let x = mosaicLeft; x < mosaicLeft + mosaicWidth; x += blockSize){
+        let pixel = context.getImageData(x + midPoint, y + midPoint, 1, 1).data;
+        context.fillStyle = rgbStrStart + pixel[0] + rgbStrMiddle + pixel[1] + rgbStrMiddle + pixel[2] + rgbStrEnd;
+        context.fillRect(x, y, blockSize, blockSize);
+      }
+    }
+
+    modalImg.src = canvas.toDataURL();
+  }
 }
 
 function createButtonForCity(loc){
