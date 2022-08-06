@@ -126,7 +126,6 @@ body{
   max-width: 700px;
   text-align: center;
   color: #05386b;
-  padding-top: 10px;
   font-size: 2em;
 }
 #qrcode, #caption, .expand {  
@@ -199,8 +198,8 @@ body{
   <!-- The Modal -->
   <div id="modal">
     <span id="close">&times;</span>
-    <img id="qrcode" src="" alt="二维码">
     <div id="caption"></div>
+    <img id="qrcode" src="" alt="二维码">
   </div>
 
   <div id="footer">
@@ -595,30 +594,36 @@ function closeQR(event) {
 }
 
 function createQR(qr){
-  const cropLeft = 90, cropTop = 210, cropWidth = 900, cropHeight = 1290;
-  const mosaicLeft = 36, mosaicTop = 34, mosaicWidth = 180, mosaicHeight = 180, blockSize = 15;
-  const canvas = document.createElement('canvas');
-  canvas.width = cropWidth;
-  canvas.height = cropHeight;
-  const context = canvas.getContext("2d");
-
   const qrImg = new Image();
   qrImg.addEventListener('load', drawQR);
   qrImg.src = "images/qr/" + qr + ".png";
 
   function drawQR(){
-    context.drawImage(qrImg, cropLeft, cropTop, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
-    
-    const midPoint = Math.floor(blockSize / 2);
-    const rgbStrStart = 'rgb(', rgbStrMiddle = ',', rgbStrEnd = ')';
+    const cropLeft = 90, cropTop = 735, cropWidth = 900, cropHeight = 990;
+    // modal.style.backgroundColor = "black";
 
-    for(let y = mosaicTop; y < mosaicTop + mosaicHeight; y += blockSize){
-      for(let x = mosaicLeft; x < mosaicLeft + mosaicWidth; x += blockSize){
-        let pixel = context.getImageData(x + midPoint, y + midPoint, 1, 1).data;
-        context.fillStyle = rgbStrStart + pixel[0] + rgbStrMiddle + pixel[1] + rgbStrMiddle + pixel[2] + rgbStrEnd;
-        context.fillRect(x, y, blockSize, blockSize);
-      }
-    }
+    const canvas = document.createElement('canvas');
+    canvas.width = cropWidth;
+    canvas.height = cropHeight;
+    const context = canvas.getContext("2d");
+
+    context.drawImage(qrImg, cropLeft, cropTop, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+
+    // mosaic group icon
+    // const mosaicLeft = 23, mosaicTop = 24, mosaicWidth = 159, mosaicHeight = 159, blockSize = 3;
+    // // context.fillStyle = "#8888ff";
+    // // context.fillRect(mosaicLeft, mosaicTop, mosaicWidth, mosaicHeight);
+    
+    // const midPoint = Math.floor(blockSize / 2);
+    // const rgbStrStart = 'rgb(', rgbStrMiddle = ',', rgbStrEnd = ')';
+
+    // for(let y = mosaicTop; y < mosaicTop + mosaicHeight; y += blockSize){
+    //   for(let x = mosaicLeft; x < mosaicLeft + mosaicWidth; x += blockSize){
+    //     let pixel = context.getImageData(x + midPoint, y + midPoint, 1, 1).data;
+    //     context.fillStyle = rgbStrStart + pixel[0] + rgbStrMiddle + pixel[1] + rgbStrMiddle + pixel[2] + rgbStrEnd;
+    //     context.fillRect(x, y, blockSize, blockSize);
+    //   }
+    // }
 
     modalImg.src = canvas.toDataURL();
   }
